@@ -1,16 +1,50 @@
 <script lang="ts">
-    import Field from "./Field.svelte";
-    import type { changeFunction } from "./types";
-    const handleChange: changeFunction = (type, label, value) => {
-        console.log('type', type);
-        console.log('label', label);
-        console.log('value', value);
-    }
+	import Field from './Field.svelte';
+	import type { changeFunction, formFields } from './types';
+	const handleChange: changeFunction = (type, label, value) => {
+		console.log('type', type);
+		console.log('label', label);
+		console.log('value', value);
+	};
+
+	export let formFields: formFields = [
+		{
+			label: 'Text Example',
+			type: 'text',
+			value: 'hello, world',
+			tabIndex: 0
+		},
+		{
+			label: 'Email Example',
+			type: 'email',
+			value: 'test@gmail.com',
+			tabIndex: 1
+		},
+		{
+			label: 'Phone Example',
+			type: 'phone',
+			value: '555-123-4567',
+			tabIndex: 2
+		},
+		{
+			label: 'Number Example',
+			type: 'number',
+			value: 1,
+			tabIndex: 3
+		}
+	];
+
+	console.log(formFields);
 </script>
 
 <form>
-    <Field tabIndex={0} value="hello, world" type="text" label="Text Example" {handleChange} />
-    <Field tabIndex={1} value="floydtjones@gmail.com" type="email" label="Email Example" {handleChange} />
-    <Field tabIndex={2} value="555-123-4567" type="phone" label="Phone Example" {handleChange} />
-    <Field tabIndex={3} value={1} type="number" label="Number Example" {handleChange} />
+	{#each formFields as field}
+		<Field
+			tabIndex={field.tabIndex}
+			value={field.value}
+			type={field.type}
+			label={field.label}
+			{handleChange}
+		/>
+	{/each}
 </form>
