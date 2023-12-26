@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String    @id @unique
+  username     String    @unique
+  
+  auth_session Session[]
+  key          Key[]
+}
+
+model Session {
+  id             String @id @unique
+  user_id        String
+  active_expires BigInt
+  idle_expires   BigInt
+  user           User   @relation(references: [id], fields: [user_id], onDelete: Cascade)
+
+  @@index([user_id])
+}
+
+model Key {
+  id              String  @id @unique
+  hashed_password String?
+  user_id         String
+  user            User    @relation(references: [id], fields: [user_id], onDelete: Cascade)
+
+  @@index([user_id])
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  message    String?
+  order      Int
+  saga       String
+  chapter    String
+  character  String
+  expression String
+}
+
+model Event {
+  id         Int @id @default(autoincrement())
+  event      String
+  completed Boolean
+  message    String
+  indices    String
+  saga       String  @default("")
+  chapter    String  @default("")
+  userId     String  @default("")
+}

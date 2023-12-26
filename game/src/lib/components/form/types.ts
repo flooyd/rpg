@@ -1,0 +1,1 @@
+export type changeFunction = (type: string, label: string, value: any) => void;
